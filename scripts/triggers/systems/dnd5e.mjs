@@ -1,15 +1,17 @@
 export default function setup() {
   if (game.system.id !== "dnd5e") return;
   Hooks.on("dnd5e.restCompleted", restCompleted.bind("dnd5e.restCompleted"));
-  Hooks.on("dnd5e.rollAbilitySave", rollAbilitySave.bind("dnd5e.rollAbilitySave"));
-  Hooks.on("dnd5e.rollAbilityTest", rollAbilityTest.bind("dnd5e.rollAbilityTest"));
+  Hooks.on("dnd5e.rollSavingThrow", rollSavingThrow.bind("dnd5e.rollSavingThrow"));
+  Hooks.on("dnd5e.rollAbilityCheck", rollAbilityCheck.bind("dnd5e.rollAbilityCheck"));
   Hooks.on("dnd5e.rollAttack", rollAttack.bind("dnd5e.rollAttack"));
   Hooks.on("dnd5e.rollDamage", rollDamage.bind("dnd5e.rollDamage"));
   Hooks.on("dnd5e.rollDeathSave", rollDeathSave.bind("dnd5e.rollDeathSave"));
   Hooks.on("dnd5e.rollSkill", rollSkill.bind("dnd5e.rollSkill"));
   Hooks.on("dnd5e.rollToolCheck", rollToolCheck.bind("dnd5e.rollToolCheck"));
-  Hooks.on("dnd5e.healActor", healActor.bind("dnd5e.healActor"));
-  Hooks.on("dnd5e.damageActor", damageActor.bind("dnd5e.damageActor"));
+  // Hooks.on("dnd5e.healActor", healActor.bind("dnd5e.healActor"));
+  // Hooks.on("dnd5e.damageActor", damageActor.bind("dnd5e.damageActor"));
+  // TODO: Replaced by dnd5e.applyDamage
+  // TODO: Maybe add initiative
 }
 
 /* -------------------------------------------------- */
@@ -24,68 +26,82 @@ async function _filterAndCall(actor, hook, context) {
   const u = effectmacro.utils;
   if (!u.isExecutor(actor)) return;
   for (const e of actor.appliedEffects.filter(e => u.hasMacro(e, hook))) {
+    console.log(`EffectMacro | Calling ${hook} macro for effect ${e.name} on actor ${actor.name}`);
     await u.callMacro(e, hook, context);
   }
 }
 
 /* -------------------------------------------------- */
 
-function rollAttack(item, roll, ammoUpdate) {
-  if (!item) return;
-  return _filterAndCall(item.actor, this, { item, roll, ammoUpdate });
+function rollAttack(rolls, data) { // https://github.com/foundryvtt/dnd5e/wiki/Hooks
+  const actor = data.subject.actor;
+  const item = data.subject.item;
+  const ammoUpdate = data.ammoUpdate;
+  return _filterAndCall(actor, this, { item, rolls, ammoUpdate });
 }
 
 /* -------------------------------------------------- */
 
-function rollAbilitySave(actor, roll, abilityId) {
-  return _filterAndCall(actor, this, { roll, abilityId });
+function rollSavingThrow(rolls, data) {
+  const actor = data.subject;
+  const ability = data.ability;
+  return _filterAndCall(actor, this, { rolls, ability });
 }
 
 /* -------------------------------------------------- */
 
-function rollDeathSave(actor, roll, updates) {
-  return _filterAndCall(actor, this, { roll, updates });
+function rollDeathSave(rolls, data) {
+  const actor = data.subject;
+  const updates = data.updates;
+  return _filterAndCall(actor, this, { rolls, updates });
 }
 
 /* -------------------------------------------------- */
 
-function rollAbilityTest(actor, roll, abilityId) {
-  return _filterAndCall(actor, this, { roll, abilityId });
+function rollAbilityCheck(rolls, data) {
+  const actor = data.subject;
+  const ability = data.ability;
+  return _filterAndCall(actor, this, { rolls, ability });
 }
 
 /* -------------------------------------------------- */
 
-function rollSkill(actor, roll, skillId) {
-  return _filterAndCall(actor, this, { roll, skillId });
+function rollSkill(rolls, data) {
+  const actor = data.subject;
+  const skill = data.skill
+  return _filterAndCall(actor, this, { rolls, skill });
 }
 
 /* -------------------------------------------------- */
 
-function rollDamage(item, roll) {
-  if (!item) return;
-  return _filterAndCall(item.actor, this, { item, roll });
+function rollDamage(rolls, data) {
+  const actor = data.subject.actor;
+  const item = data.subject.item;
+  return _filterAndCall(actor, this, { item, rolls });
 }
 
 /* -------------------------------------------------- */
 
-function rollToolCheck(actor, roll, toolId) {
-  return _filterAndCall(actor, this, { roll, toolId });
+function rollToolCheck(rolls, data) {
+  const actor = data.subject;
+  const tool = data.tool;
+  return _filterAndCall(actor, this, { rolls, tool });
 }
 
 /* -------------------------------------------------- */
 
-function restCompleted(actor, data) {
-  return _filterAndCall(actor, data.longRest ? "dnd5e.longRest" : "dnd5e.shortRest", { data });
+function restCompleted(actor, result, config) {
+  return _filterAndCall(actor, result.type ? "long" : "short", { result, config });
 }
 
-/* -------------------------------------------------- */
+// /* -------------------------------------------------- */
 
-function healActor(actor, changes, update, userId) {
-  return _filterAndCall(actor, this, { changes, update, userId });
-}
+// function healActor(actor, changes, update, userId) {
+//   return _filterAndCall(actor, this, { changes, update, userId });
+// }
 
-/* -------------------------------------------------- */
+// /* -------------------------------------------------- */
 
-function damageActor(actor, changes, update, userId) {
-  return _filterAndCall(actor, this, { changes, update, userId });
-}
+// function damageActor(actor, changes, update, userId) {
+//   return _filterAndCall(actor, this, { changes, update, userId });
+// }

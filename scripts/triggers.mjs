@@ -33,14 +33,14 @@ export const TRIGGERS = {
   dnd5e: [
     "dnd5e.rollAttack",
     "dnd5e.rollDamage",
-    "dnd5e.rollAbilitySave",
+    "dnd5e.rollSavingThrow",
     "dnd5e.rollDeathSave",
-    "dnd5e.rollAbilityTest",
+    "dnd5e.rollAbilityCheck",
     "dnd5e.rollSkill",
     "dnd5e.rollToolCheck",
-    "dnd5e.shortRest",
-    "dnd5e.longRest",
-    "dnd5e.healActor",
-    "dnd5e.damageActor",
+    "dnd5e.restCompleted",
+    // "dnd5e.healActor",
+    // "dnd5e.damageActor",
+    // See dnd5e.js for changes
   ],
 };
