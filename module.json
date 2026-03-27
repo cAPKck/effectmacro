@@ -36,8 +36,8 @@
       "flags": {}
     }
   ],
-  "url": "https://github.com/krbz999/effectmacro",
-  "manifest": "https://github.com/krbz999/effectmacro/releases/latest/download/module.json",
+  "url": "https://github.com/cAPKck/effectmacro",
+  "manifest": "https://github.com/cAPKck/effectmacro/releases/latest/download/module.json",
   "download": "AUTOMATIC",
   "flags": {
     "hotReload": {

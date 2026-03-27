@@ -46,7 +46,9 @@
       "rollSavingThrow": "When a saving throw is made",
       "rollSkill": "When a skill check is made",
       "rollToolCheck": "When a tool check is made",
-      "shortRest": "When a short rest is completed"
+      "shortRest": "When a short rest is completed",
+
+      "preRollHitDieV2": "Before a hit die is rolled"
     },
 
     "DeletePrompt": "Delete this macro?",

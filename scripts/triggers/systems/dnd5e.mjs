@@ -17,7 +17,8 @@ export default function init() {
         "dnd5e.rollToolCheck",
         "dnd5e.rollInitiative",
         "dnd5e.rollConcentration",
-        "dnd5e.rollHitDie"
+        "dnd5e.rollHitDie",
+        "dnd5e.preRollHitDieV2"
       ]
     },
     {
@@ -53,6 +54,9 @@ export default function init() {
   Hooks.on("dnd5e.damageActor", damageActor);
   Hooks.on("dnd5e.beginConcentrating", beginConcentrating);
   Hooks.on("dnd5e.endConcentration", endConcentration);
+
+  Hooks.on("dnd5e.preRollHitDieV2", preRollHitDieV2);
+
 }
 
 /* -------------------------------------------------- */
@@ -261,4 +265,18 @@ async function beginConcentrating(actor, item, effect, activity) {
 async function endConcentration(actor, effect) {
   if (!actor) return;
   return _executeAppliedEffects(actor, "dnd5e.endConcentration", { effect });
+}
+
+/* -------------------------------------------------- */
+
+/**
+ * On pre hit die roll (v2).
+ * @param {object} config   The hit die roll configuration.
+ * @param {object} dialog   The roll dialog data.
+ * @param {object} message  The roll message data.
+ */
+async function preRollHitDieV2(config, dialog, message) {
+  const actor = config.subject;
+  if (!actor) return;
+  return _executeAppliedEffects(actor, "dnd5e.preRollHitDieV2", { config, dialog, message });
 }
