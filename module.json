@@ -1,26 +1,28 @@
 {
   "id": "effectmacro",
   "title": "Effect Macro",
+  "description": "A module that allows users to embed macros directly into effects.",
   "version": "AUTOMATIC",
+
   "authors": [
     {
       "name": "Zhell",
-      "url": "https://github.com/krbz999",
-      "discord": "zhell9201",
-      "ko-fi": "https://ko-fi.com/zhell",
-      "patreon": "https://patreon.com/zhell"
+      "url": "https://git.gay/Zhell",
+      "discord": "zhell9201"
     }
   ],
   "compatibility": {
-    "minimum": "13",
-    "maximum": "13",
-    "verified": "13"
+    "minimum": "14.361",
+    "verified": "14"
   },
   "esmodules": [
-    "scripts/module.mjs"
+    "main.mjs"
   ],
   "styles": [
-    "styles/styles.css"
+    {
+      "src": "main.css",
+      "layer": "module"
+    }
   ],
   "languages": [
     {
@@ -36,9 +38,12 @@
       "flags": {}
     }
   ],
-  "url": "https://github.com/krbz999/effectmacro",
-  "manifest": "https://github.com/krbz999/effectmacro/releases/latest/download/module.json",
+  "url": "https://git.gay/Zhell/effectmacro",
+  "manifest": "https://git.gay/Zhell/effectmacro/releases/download/latest/module.json",
   "download": "AUTOMATIC",
+  "license": "https://git.gay/Zhell/effectmacro/raw/branch/main/LICENSE",
+
+  "changelog": "https://git.gay/Zhell/effectmacro/releases",
   "flags": {
     "hotReload": {
       "extensions": [

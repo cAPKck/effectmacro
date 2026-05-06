@@ -1,7 +1,47 @@
+import postcss from "rollup-plugin-postcss";
+import postcssImport from "postcss-import";
+import postcssValueParser from "postcss-value-parser";
+import resolve from "@rollup/plugin-node-resolve";
+
+/**
+ * Adjust css urls; each url that starts with `/modules/effectmacro/`
+ * gets said prefix sliced off such that all urls are relative.
+ */
+function adjustCSSUrls() {
+  return {
+    postcssPlugin: "rewrite-package-urls",
+    Declaration(decl) {
+      const parsed = postcssValueParser(decl.value);
+
+      parsed.walk(node => {
+        if ((node.type === "function") && (node.value === "url")) {
+          const urlNode = node.nodes[0];
+          const url = urlNode?.value;
+          if (!url?.startsWith("/modules/effectmacro/")) return;
+          urlNode.value = url.slice("/modules/effectmacro/".length);
+        }
+      });
+
+      decl.value = parsed.toString();
+    },
+  };
+}
+adjustCSSUrls.postcss = true;
+
 export default {
-  input: "scripts/module.mjs",
+  input: "./_main.mjs",
   output: {
-    file: "module.mjs",
+    file: "./public/main.mjs",
     format: "esm",
   },
+  plugins: [
+    resolve(),
+    postcss({
+      plugins: [
+        postcssImport(),
+        adjustCSSUrls(),
+      ],
+      extract: true,
+    }),
+  ],
 };
