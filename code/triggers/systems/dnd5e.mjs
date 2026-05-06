@@ -1,5 +1,8 @@
 import { TRIGGERS } from "../../triggers.mjs";
 
+/**
+ * Initialize hooks.
+ */
 export default function init() {
   if (game.system.id !== "dnd5e") return;
 
@@ -17,15 +20,15 @@ export default function init() {
         "dnd5e.rollToolCheck",
         "dnd5e.rollInitiative",
         "dnd5e.rollConcentration",
-        "dnd5e.rollHitDie"
-      ]
+        "dnd5e.rollHitDie",
+      ],
     },
     {
       label: "EFFECTMACRO.dnd5e.RestTriggers",
       options: [
         "dnd5e.shortRest",
-        "dnd5e.longRest"
-      ]
+        "dnd5e.longRest",
+      ],
     },
     {
       label: "EFFECTMACRO.dnd5e.ChangeTriggers",
@@ -33,9 +36,9 @@ export default function init() {
         "dnd5e.healActor",
         "dnd5e.damageActor",
         "dnd5e.beginConcentrating",
-        "dnd5e.endConcentration"
-      ]
-    }
+        "dnd5e.endConcentration",
+      ],
+    },
   );
 
   Hooks.on("dnd5e.rollAttack", rollAttack);

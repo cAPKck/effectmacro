@@ -1,5 +1,11 @@
 import { TRIGGERS } from "../triggers.mjs";
 
+/**
+ * Hook function to render elements on core active effect config.
+ * @param {foundry.applications.sheets.ActiveEffectConfig} config
+ * @param {HTMLElement} html
+ * @param {object} data
+ */
 export default async function renderActiveEffectConfig(config, html, data) {
   if (game.settings.get(effectmacro.id, "restrictPermissions") && !game.user.isGM) return;
 
@@ -7,28 +13,27 @@ export default async function renderActiveEffectConfig(config, html, data) {
   const options = [];
 
   for (const { label, options: opts } of TRIGGERS) {
-    const group = label ? game.i18n.localize(label) : undefined;
+    const group = label ? _loc(label) : undefined;
     for (const w of opts) {
       const hasMacro = effectmacro.utils.hasMacro(config.document, w);
-      const option = { group, value: w, label: game.i18n.localize(`EFFECTMACRO.${w}`) };
+      const option = { group, value: w, label: _loc(`EFFECTMACRO.${w}`) };
       if (hasMacro) used.push(option);
       else options.push(option);
     }
   }
 
-  const div = document.createElement("DIV");
   const template = "modules/effectmacro/templates/effect-sheet.hbs";
-  div.innerHTML = await foundry.applications.handlebars.renderTemplate(template, { used, options });
+  const htmlString = await foundry.applications.handlebars.renderTemplate(template, { used, options });
+  const element = foundry.utils.parseHTML(htmlString);
 
-  div.querySelectorAll("[data-action]").forEach(n => {
+  element.querySelectorAll("[data-action]").forEach(n => {
     switch (n.dataset.action) {
       case "macro-add": n.addEventListener("click", _onClickMacroAdd.bind(config)); break;
       case "macro-edit": n.addEventListener("click", _onClickMacroEdit.bind(config)); break;
       case "macro-delete": n.addEventListener("click", _onClickMacroDelete.bind(config)); break;
     }
   });
-  const tab = html.querySelector("section[data-tab='details']");
-  tab.appendChild(div.firstElementChild);
+  html.querySelector("section[data-tab='details']").insertAdjacentElement("beforeend", element);
 }
 
 /* -------------------------------------------------- */

@@ -1,3 +1,6 @@
+/**
+ * Initialize settings.
+ */
 export default function() {
   game.settings.register(effectmacro.id, "restrictPermissions", {
     name: "EFFECTMACRO.SettingRestrictPermission",

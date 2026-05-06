@@ -1,3 +1,6 @@
+/**
+ * Initialize hooks.
+ */
 export default function init() {
   Hooks.on("preUpdateCombat", preUpdateCombat);
   Hooks.on("updateCombatant", updateCombatant);

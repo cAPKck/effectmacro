@@ -1,5 +1,8 @@
 const { HandlebarsApplicationMixin, DocumentSheet } = foundry.applications.api;
 
+/**
+ * Configuration application for an embedded macro.
+ */
 export default class MacroConfig extends HandlebarsApplicationMixin(DocumentSheet) {
   /**
    * The macro type.
@@ -44,7 +47,7 @@ export default class MacroConfig extends HandlebarsApplicationMixin(DocumentShee
 
   /** @inheritdoc */
   get title() {
-    return game.i18n.format("EFFECTMACRO.MacroSheet", { name: this.document.name });
+    return _loc("EFFECTMACRO.MacroSheet", { name: this.document.name });
   }
 
   /* -------------------------------------------------- */
@@ -67,10 +70,10 @@ export default class MacroConfig extends HandlebarsApplicationMixin(DocumentShee
 
     const label = `EFFECTMACRO.${this.type}`;
     context.field = new foundry.data.fields.JavaScriptField({
-      label: `${game.i18n.localize("Command")}: ${game.i18n.localize(label)}`,
+      label: `${_loc("MACRO.FIELDS.command.label")}: ${_loc(label)}`,
     });
 
-    context.buttons = [{ type: "submit", label: "Save", icon: "fa-solid fa-save" }];
+    context.buttons = [{ type: "submit", label: "COMMON.Confirm", icon: "fa-solid fa-save" }];
 
     return context;
   }

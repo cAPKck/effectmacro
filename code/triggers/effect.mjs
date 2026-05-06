@@ -1,4 +1,6 @@
-
+/**
+ * Initialize hooks.
+ */
 export default function init() {
   Hooks.on("createActiveEffect", onCreateDelete.bind("onCreate"));
   Hooks.on("deleteActiveEffect", onCreateDelete.bind("onDelete"));
