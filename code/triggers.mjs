@@ -1,3 +1,6 @@
+/**
+ * @type {{ options: string[], label?: string }[]}
+ */
 export const TRIGGERS = [
   {
     options: ["never"],

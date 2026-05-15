@@ -1,0 +1,3 @@
+[submodule "repository-utilities"]
+	path = repository-utilities
+	url = https://git.gay/Zhell/repository-utilities.git

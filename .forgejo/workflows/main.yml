@@ -1,0 +1,64 @@
+on: [release]
+jobs:
+  release:
+    runs-on: act
+    steps:
+      # Checkout repo
+      - name: checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      # Install dependencies
+      - name: install dependencies
+        run: npm ci
+
+      # Grab manifest and mutate it
+      - name: mutate manifest
+        run: node repository-utilities/tools/prepare-manifest.mjs
+        env:
+          VERSION: "${{forgejo.event.release.tag_name}}"
+          REPOSITORY: "${{forgejo.repository}}"
+
+      # Build packs and code
+      - name: build code
+        run: |
+          npm run build
+          mv --force public/main.mjs main.mjs
+          mv --force public/main.css main.css
+
+      # Create zip
+      - name: Compress files
+        run: zip -r ./module.zip module.json main.css main.mjs packs/ lang/ templates/
+
+      # Append zip and manifest to release
+      - name: append to release
+        run: node repository-utilities/tools/append-to-release.mjs
+        env:
+          VERSION: "${{forgejo.event.release.tag_name}}"
+          ASSETS: "[\"module.zip\", \"module.json\"]"
+
+      # Checkout wiki
+      - name: update wiki
+        uses: actions/checkout@v4
+        with:
+          repository: "${{github.repository}}.wiki"
+          path: _wiki
+          token: "${{secrets.GITHUB_TOKEN}}"
+          ref: main
+
+      # Copy main repo's wiki/ into wiki
+      - name: copy wiki
+        run: |
+          rm -rf _wiki/*
+          cp -r wiki/. _wiki/
+
+      # Commit changes to wiki
+      - name: commit wiki
+        run: |
+          cd _wiki
+          git config user.name "EffectMacro Wiki"
+          git config user.email "wiki@effectmacro.com"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Update wiki"
+          git push

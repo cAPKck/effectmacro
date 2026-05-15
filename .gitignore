@@ -1,5 +1,5 @@
-packs/
+_environment.yml
 *.lock
-node_modules/
 foundry
-foundry-config.yaml
+node_modules/
+packs/

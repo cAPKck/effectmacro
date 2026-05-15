@@ -1,31 +1,29 @@
 {
-  "name": "effectmacro",
   "version": "1.0.0",
-  "description": "Effect Macro",
   "scripts": {
-    "build": "rollup -c",
-    "createSymlinks": "node ./tools/create-symlinks.mjs",
+    "createSymlinks": "node repository-utilities/tools/create-symlinks.mjs",
+    "build": "npm run build:code",
+    "build:code": "rollup -c",
     "postinstall": "npm run createSymlinks"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/krbz999/effectmacro.git"
-  },
-  "keywords": [
-    "fvtt",
-    "module"
-  ],
   "author": "Zhell",
-  "bugs": {
-    "url": "https://github.com/krbz999/effectmacro"
-  },
-  "homepage": "https://github.com/krbz999/effectmacro",
   "devDependencies": {
-    "@foundryvtt/foundryvtt-cli": "^1.0.2",
+    "@eslint/js": "^9.27.0",
+    "@foundryvtt/foundryvtt-cli": "^3.0.3",
     "@html-eslint/eslint-plugin": "^0.26.0",
     "@html-eslint/parser": "^0.26.0",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "eslint": "^8.57.0",
-    "rollup": "^4.9.1"
+    "@rollup/plugin-node-resolve": "^15.3.1",
+    "@stylistic/eslint-plugin": "^4.3.0",
+    "axios": "^1.16.0",
+    "eslint": "^9.27.0",
+    "eslint-plugin-jsdoc": "^51.4.1",
+    "postcss": "^8.5.6",
+    "postcss-import": "^16.1.0",
+    "repository-utilities": "file:./repository-utilities",
+    "rollup": "^4.9.1",
+    "rollup-plugin-postcss": "^4.0.2",
+    "showdown": "^2.1.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.1"
   }
 }
